@@ -5,19 +5,21 @@ import com.shindig.carol.item.ModItems;
 import com.shindig.carol.sound.ModSounds;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.util.math.Vector2f;
+
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
+import net.minecraft.entity.ProjectileDeflection;
+import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.PersistentProjectileEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.world.ServerWorld;
-import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvent;
-import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
+import org.jetbrains.annotations.Nullable;
 
 public class TapNoteProjectileEntity extends PersistentProjectileEntity {
     private float rotation;
@@ -32,10 +34,17 @@ public class TapNoteProjectileEntity extends PersistentProjectileEntity {
     public TapNoteProjectileEntity(World world, PlayerEntity player) {
         super(ModEntities.TAP_NOTE, player, world, new ItemStack(ModItems.TAP_NOTE), null);
     }
+
+    public TapNoteProjectileEntity(World world, double x, double y, double z, ItemStack stack, @Nullable ItemStack shotFrom) {
+        super(ModEntities.TAP_NOTE, x, y, z, world, stack, shotFrom);
+
+    }
+
     @Override
     protected ItemStack getDefaultItemStack() {
         return new ItemStack(ModItems.TAP_NOTE);
     }
+
     @Override
     protected SoundEvent getHitSound() {
         return ModSounds.MAIMAI_GOOD;
@@ -43,13 +52,15 @@ public class TapNoteProjectileEntity extends PersistentProjectileEntity {
 
     public float getRenderingRotation() {
         rotation += 0.5f;
-        if(rotation >= 360) {
+        if (rotation >= 360) {
             rotation = 0;
         }
         return rotation;
     }
 
-    public boolean isGrounded() {return inGround;}
+    public boolean isGrounded() {
+        return inGround;
+    }
 
     @Override
     protected void onBlockHit(BlockHitResult blockHitResult) {
@@ -67,7 +78,7 @@ public class TapNoteProjectileEntity extends PersistentProjectileEntity {
             }
         }
 
-        Vec3d vec3d2 = vec3d.normalize().multiply((double)0.05F);
+        Vec3d vec3d2 = vec3d.normalize().multiply((double) 0.05F);
         this.setPos(this.getX() - vec3d2.x, this.getY() - vec3d2.y, this.getZ() - vec3d2.z);
         this.playSound(this.getSound(), 1.0F, 1.0F);
         this.inGround = true;
@@ -82,17 +93,41 @@ public class TapNoteProjectileEntity extends PersistentProjectileEntity {
     protected void onEntityHit(EntityHitResult entityHitResult) {
         //super.onEntityHit(entityHitResult);
         Entity entity = entityHitResult.getEntity();
-        entity.damage(this.getDamageSources().thrown(this, this.getOwner()), 4);
-        if (!entity.isAlive()) {
-            this.playSound(ModSounds.MAIMAI_FULL_COMBO, 1.0f, 1.0f);
-            this.playSound(ModSounds.MAIMAI_BREAK_CRITICAL, 1.0f, 1.0f);
-        }
-        this.playSound(ModSounds.MAIMAI_ANSWER, 2.0f, 1.0f);
-        if(!this.getWorld().isClient()) {
-            this.getWorld().sendEntityStatus(this, (byte)3);
-            this.discard();
+        DamageSource damageSource = this.getDamageSources().thrown(this, this.getOwner());
+
+        //check if it successfully damaged the entity
+        if (entity.damage(damageSource, 4)) {
+            if (entity instanceof CarolEntity carol) {
+                if (!this.getWorld().isClient && this.getPierceLevel() <= 0) {
+                    carol.setStuckTapNoteCount(carol.getStuckTapNoteCount() + 1);
+                }
+
+
+                this.playSound(ModSounds.MAIMAI_ANSWER, 2.0f, 1.0f);
+
+                //Check if the entity is dead
+                if (!entity.isAlive()) {
+                    this.playSound(ModSounds.MAIMAI_FULL_COMBO, 1.0f, 1.0f);
+                    this.playSound(ModSounds.MAIMAI_BREAK_CRITICAL, 1.0f, 1.0f);
+                }
+
+                //Remove Tap Note
+                if (!this.getWorld().isClient()) {
+                    this.getWorld().sendEntityStatus(this, (byte) 3);
+                    this.discard();
+                }
+
+            } else { //if it failed damaging entity, bounce it off
+                //entity.setFireTicks(j);
+                this.deflect(ProjectileDeflection.SIMPLE, entity, this.getOwner(), false);
+                this.setVelocity(this.getVelocity().multiply(0.2));
+                if (!this.getWorld().isClient && this.getVelocity().lengthSquared() < 1.0E-7) {
+                    if (this.pickupType == PersistentProjectileEntity.PickupPermission.ALLOWED) {
+                        this.dropStack(this.asItemStack(), 0.1F);
+                    }
+                    this.discard();
+                }
+            }
         }
     }
 }
-
-

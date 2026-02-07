@@ -5,12 +5,15 @@ import com.shindig.carol.entity.custom.CarolEntity;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.entity.EntityRendererFactory;
 import net.minecraft.client.render.entity.MobEntityRenderer;
+import net.minecraft.client.render.entity.feature.StuckArrowsFeatureRenderer;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.Identifier;
 
 public class CarolRenderer extends MobEntityRenderer<CarolEntity, CarolModel<CarolEntity>> {
     public CarolRenderer(EntityRendererFactory.Context context) {
         super(context, new CarolModel<>(context.getPart(CarolModel.CAROL)), 0.75f);
+        //this.addFeature(new StuckArrowsFeatureRenderer<>(context, this));
+        this.addFeature(new CarolStuckTapNotesFeatureRenderer<>(context, this));
     }
 
     @Override

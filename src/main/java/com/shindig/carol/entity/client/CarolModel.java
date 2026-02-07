@@ -1,5 +1,6 @@
 package com.shindig.carol.entity.client;
 
+import com.google.common.collect.ImmutableList;
 import com.shindig.carol.Carol;
 import com.shindig.carol.entity.custom.CarolEntity;
 import net.minecraft.client.model.*;
@@ -10,9 +11,14 @@ import net.minecraft.client.render.entity.model.SinglePartEntityModel;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.random.Random;
+
+import java.util.List;
 
 public class CarolModel<T extends CarolEntity> extends SinglePartEntityModel<T> {
     public static final EntityModelLayer CAROL = new EntityModelLayer(Identifier.of(Carol.MOD_ID, "carol"), "main");
+
+    private final List<ModelPart> parts;
 
     private final ModelPart root;
     private final ModelPart torso;
@@ -79,7 +85,11 @@ public class CarolModel<T extends CarolEntity> extends SinglePartEntityModel<T> 
         this.bottom = this.skirt.getChild("bottom");
         this.panty = this.torso.getChild("panty");
         this.pantyline = this.panty.getChild("pantyline");
+
+        this.parts = (List<ModelPart>)root.traverse().filter(part -> !part.isEmpty()).collect(ImmutableList.toImmutableList());
+        //Carol.LOGGER.info("list of stuckable parts are " + this.parts);
     }
+
     public static TexturedModelData getTexturedModelData() {
         ModelData modelData = new ModelData();
         ModelPartData modelPartData = modelData.getRoot();
@@ -415,5 +425,9 @@ public class CarolModel<T extends CarolEntity> extends SinglePartEntityModel<T> 
     @Override
     public ModelPart getPart() {
         return root;
+    }
+
+    public ModelPart getRandomPart(Random random) {
+        return (ModelPart)this.parts.get(random.nextInt(this.parts.size()));
     }
 }

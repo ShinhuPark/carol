@@ -2,10 +2,7 @@ package com.shindig.carol.entity.custom;
 
 import com.shindig.carol.entity.ModEntities;
 import com.shindig.carol.item.ModItems;
-import net.minecraft.entity.AnimationState;
-import net.minecraft.entity.EntityData;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.SpawnReason;
+import net.minecraft.entity.*;
 import net.minecraft.entity.ai.goal.*;
 import net.minecraft.entity.attribute.DefaultAttributeContainer;
 import net.minecraft.entity.attribute.EntityAttributes;
@@ -32,6 +29,10 @@ import org.jetbrains.annotations.Nullable;
 public class CarolEntity extends AnimalEntity {
     public final AnimationState idleAnimationState = new AnimationState();
     private int idleAnimationTimeout = 0;
+
+    private static final TrackedData<Integer> STUCK_TAP_NOTE_COUNT = DataTracker.registerData(CarolEntity.class, TrackedDataHandlerRegistry.INTEGER);
+    public int stuckTapNoteTimer;
+
     //private static final TrackedData<Integer> DATA_ID_TYPE_VARIANT =
     //        DataTracker.registerData(CarolEntity.class, TrackedDataHandlerRegistry.INTEGER);
 
@@ -54,6 +55,15 @@ public class CarolEntity extends AnimalEntity {
         this.goalSelector.add(5, new LookAtEntityGoal(this, PlayerEntity.class, 4.0F));
         this.goalSelector.add(6, new LookAroundGoal(this));
     }
+
+    public final int getStuckTapNoteCount() {
+        return this.dataTracker.get(STUCK_TAP_NOTE_COUNT);
+    }
+
+    public final void setStuckTapNoteCount(int stuckTapNoteCount) {
+        this.dataTracker.set(STUCK_TAP_NOTE_COUNT, stuckTapNoteCount);
+    }
+
 
     public static DefaultAttributeContainer.Builder createAttributes() {
         return MobEntity.createMobAttributes()
@@ -78,6 +88,18 @@ public class CarolEntity extends AnimalEntity {
 
         if (this.getWorld().isClient()) {
             this.setupAnimationStates();
+
+            int i = this.getStuckArrowCount();
+            if (i > 0) {
+                if (this.stuckTapNoteTimer <= 0) {
+                    this.stuckTapNoteTimer = 20 * (30 - i);
+                }
+
+                this.stuckTapNoteTimer--;
+                if (this.stuckTapNoteTimer <= 0) {
+                    this.setStuckTapNoteCount(i - 1);
+                }
+            }
         }
     }
 
@@ -99,6 +121,7 @@ public class CarolEntity extends AnimalEntity {
     @Override
     protected void initDataTracker(DataTracker.Builder builder) {
         super.initDataTracker(builder);
+        builder.add(STUCK_TAP_NOTE_COUNT, 0);
         //builder.add(DATA_ID_TYPE_VARIANT, 0);
     }
 
