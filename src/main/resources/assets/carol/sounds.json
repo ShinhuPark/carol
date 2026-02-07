@@ -1,0 +1,38 @@
+{
+  "maimai_great": {
+    "subtitle": "sound.carol.maimai_great",
+    "sounds": [
+      "carol:maimai_great"
+    ]
+  },
+  "maimai_break_critical": {
+    "subtitle": "sound.carol.maimai_break_critical",
+    "sounds": [
+      "carol:maimai_break_critical"
+    ]
+  },
+  "maimai_full_combo": {
+    "subtitle": "sound.carol.maimai_full_combo",
+    "sounds": [
+      "carol:maimai_full_combo"
+    ]
+  },
+  "maimai_good": {
+    "subtitle": "sound.carol.maimai_good",
+    "sounds": [
+      "carol:maimai_good"
+    ]
+  },
+  "maimai_normal": {
+    "subtitle": "sound.carol.maimai_normal",
+    "sounds": [
+      "carol:maimai_normal"
+    ]
+  },
+  "maimai_answer": {
+    "subtitle": "sound.carol.maimai_answer",
+    "sounds": [
+      "carol:maimai_answer"
+    ]
+  }
+}

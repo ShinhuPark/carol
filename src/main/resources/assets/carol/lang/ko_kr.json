@@ -1,0 +1,8 @@
+{
+  "item.carol.tap_note" : "탭 노트",
+  "item.carol.carol_spawn_egg" :  "캐롤 스폰알",
+
+
+  "entity.carol.tap_note" : "탭 노트",
+  "entity.carol.carol" : "캐롤"
+}

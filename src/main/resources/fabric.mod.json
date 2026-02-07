@@ -1,0 +1,37 @@
+{
+	"schemaVersion": 1,
+	"id": "carol",
+	"version": "${version}",
+	"name": "Carol",
+	"description": "This is my first minecraft mod that is a complete mod.",
+	"authors": [
+		"Me!"
+	],
+	"contact": {
+		"homepage": "https://fabricmc.net/",
+		"sources": "https://github.com/FabricMC/fabric-example-mod"
+	},
+	"license": "CC0-1.0",
+	"icon": "assets/carol/icon.png",
+	"environment": "*",
+	"entrypoints": {
+		"main": [
+			"com.shindig.carol.Carol"
+		],
+		"fabric-datagen": [
+			"com.shindig.carol.CarolDataGenerator"
+		],
+        "client": [
+            "com.shindig.carol.CarolClient"
+        ]
+	},
+	"mixins": [
+		"carol.mixins.json"
+	],
+	"depends": {
+		"fabricloader": ">=0.18.4",
+		"minecraft": "~1.21.1",
+		"java": ">=21",
+		"fabric-api": "*"
+	}
+}
