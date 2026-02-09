@@ -28,11 +28,12 @@ public class TapNoteProjectileRenderer extends EntityRenderer<TapNoteProjectileE
 
         matrices.multiply(RotationAxis.POSITIVE_Y.rotationDegrees(MathHelper.lerp(tickDelta, entity.prevYaw, entity.getYaw())));
         matrices.multiply(RotationAxis.POSITIVE_X.rotationDegrees(MathHelper.lerp(tickDelta, entity.prevPitch, entity.getPitch())));
-        matrices.translate(0, -0.8f, 0);
+        matrices.scale(0.5f, 0.5f, 0.5f);
+        matrices.translate(0, -0.5f, 0);
 
 
         VertexConsumer vertexConsumer = ItemRenderer.getDirectItemGlintConsumer(vertexConsumers,
-                this.model.getLayer(Identifier.of(Carol.MOD_ID, "textures/entity/tap_note/tap_note.png")), false, false);
+                this.model.getLayer(Identifier.of(Carol.MOD_ID, "textures/entity/tap_note/tap_note.png")), false, true);
         this.model.render(matrices, vertexConsumer, light, OverlayTexture.DEFAULT_UV);
         matrices.pop();
         super.render(entity, yaw, tickDelta, matrices, vertexConsumers,light);

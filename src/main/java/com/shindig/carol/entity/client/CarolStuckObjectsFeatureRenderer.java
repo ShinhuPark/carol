@@ -11,6 +11,7 @@ import net.minecraft.client.render.entity.feature.FeatureRenderer;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.RotationAxis;
 import net.minecraft.util.math.random.Random;
 
 @Environment(EnvType.CLIENT)
@@ -37,17 +38,25 @@ public abstract class CarolStuckObjectsFeatureRenderer<T extends CarolEntity, M 
                 //Carol.LOGGER.info("Stuck at " + modelPart);
                 ModelPart.Cuboid cuboid = modelPart.getRandomCuboid(random);
                 modelPart.rotate(matrixStack);
+
                 float o = random.nextFloat();
                 float p = random.nextFloat();
                 float q = random.nextFloat();
-                float r = MathHelper.lerp(o, cuboid.minX, cuboid.maxX) / 16.0F;
-                float s = MathHelper.lerp(p, cuboid.minY, cuboid.maxY) / 16.0F;
-                float t = MathHelper.lerp(q, cuboid.minZ, cuboid.maxZ) / 16.0F;
+
+//                float r = MathHelper.lerp(o, cuboid.minX, cuboid.maxX) / 16.0F;
+//                float s = MathHelper.lerp(p, cuboid.minY, cuboid.maxY) / 16.0F;
+//                float t = MathHelper.lerp(q, cuboid.minZ, cuboid.maxZ) / 16.0F;
+
+                float r = MathHelper.lerp(0.5f, cuboid.minX, cuboid.maxX) / 16.0F;
+                float s = MathHelper.lerp(0.5f, cuboid.minY, cuboid.maxY) / 16.0F;
+                float t = MathHelper.lerp(0.5f, cuboid.minZ, cuboid.maxZ) / 16.0F;
                 matrixStack.translate(r, s, t);
                 o = -1.0F * (o * 2.0F - 1.0F);
                 p = -1.0F * (p * 2.0F - 1.0F);
                 q = -1.0F * (q * 2.0F - 1.0F);
-                this.renderObject(matrixStack, vertexConsumerProvider, i, livingEntity, o, p, q, h);
+                //this.renderObject(matrixStack, vertexConsumerProvider, i, livingEntity, o, p, q, h);
+                this.renderObject(matrixStack, vertexConsumerProvider, i, livingEntity, 0, 0, 0, h);
+
                 matrixStack.pop();
             }
         }

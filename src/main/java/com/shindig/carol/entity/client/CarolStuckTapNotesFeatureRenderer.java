@@ -39,6 +39,6 @@ public class CarolStuckTapNotesFeatureRenderer<T extends CarolEntity, M extends 
         tapNoteEntity.setPitch((float)(Math.atan2(directionY, f) * 180.0F / (float)Math.PI));
         tapNoteEntity.prevYaw = tapNoteEntity.getYaw();
         tapNoteEntity.prevPitch = tapNoteEntity.getPitch();
-        this.dispatcher.render(tapNoteEntity, 0.0, 0.0, 0.0, 0.0F, tickDelta, matrices, vertexConsumers, light);
+        this.dispatcher.render(tapNoteEntity, 0.0, 0.75f, 0.0, 0.0F, tickDelta, matrices, vertexConsumers, light);
     }
 }

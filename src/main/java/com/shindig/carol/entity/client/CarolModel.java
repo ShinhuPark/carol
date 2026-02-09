@@ -13,12 +13,14 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.random.Random;
 
+import java.util.Arrays;
 import java.util.List;
 
 public class CarolModel<T extends CarolEntity> extends SinglePartEntityModel<T> {
     public static final EntityModelLayer CAROL = new EntityModelLayer(Identifier.of(Carol.MOD_ID, "carol"), "main");
 
     private final List<ModelPart> parts;
+    private final List<ModelPart> STUCKABLE_PARTS;
 
     private final ModelPart root;
     private final ModelPart torso;
@@ -87,6 +89,7 @@ public class CarolModel<T extends CarolEntity> extends SinglePartEntityModel<T> 
         this.pantyline = this.panty.getChild("pantyline");
 
         this.parts = (List<ModelPart>)root.traverse().filter(part -> !part.isEmpty()).collect(ImmutableList.toImmutableList());
+        this.STUCKABLE_PARTS = Arrays.asList(this.head, leg_L, leg_R);
         //Carol.LOGGER.info("list of stuckable parts are " + this.parts);
     }
 
@@ -405,6 +408,7 @@ public class CarolModel<T extends CarolEntity> extends SinglePartEntityModel<T> 
         this.getPart().traverse().forEach(ModelPart::resetTransform);
         this.setHeadAngles(netHeadYaw, headPitch);
 
+
         this.animateMovement(CarolAnimations.WALK, limbSwing, limbSwingAmount, 1f, 1f);
         this.updateAnimation(entity.idleAnimationState, CarolAnimations.IDLE, ageInTicks, 1f);
     }
@@ -419,15 +423,15 @@ public class CarolModel<T extends CarolEntity> extends SinglePartEntityModel<T> 
 
     @Override
     public void render(MatrixStack matrices, VertexConsumer vertexConsumer, int light, int overlay, int color) {
-        root.render(matrices, vertexConsumer, light, overlay, color);
+        this.getPart().render(matrices, vertexConsumer, light, overlay, color);
     }
 
     @Override
     public ModelPart getPart() {
-        return root;
+        return this.root;
     }
 
     public ModelPart getRandomPart(Random random) {
-        return (ModelPart)this.parts.get(random.nextInt(this.parts.size()));
+        return (ModelPart)this.STUCKABLE_PARTS.get(random.nextInt(this.STUCKABLE_PARTS.size()));
     }
 }

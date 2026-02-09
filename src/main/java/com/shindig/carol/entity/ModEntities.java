@@ -18,7 +18,7 @@ public class ModEntities {
     public static final EntityType<TapNoteProjectileEntity> TAP_NOTE = Registry.register(Registries.ENTITY_TYPE,
             Identifier.of(Carol.MOD_ID, "tap_note"),
             EntityType.Builder.<TapNoteProjectileEntity>create(TapNoteProjectileEntity::new, SpawnGroup.MISC)
-                    .dimensions(1.0f, 1.0f).build());
+                    .dimensions(0.5f, 0.5f).build());
 
     public static void initialize() {
         Carol.LOGGER.info("Registering Mod Entities for " + Carol.MOD_ID);
