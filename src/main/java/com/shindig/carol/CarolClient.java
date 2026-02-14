@@ -13,7 +13,9 @@ public class CarolClient implements ClientModInitializer {
     @Override
     public void onInitializeClient() {
         EntityModelLayerRegistry.registerModelLayer(CarolModel.CAROL, CarolModel::getTexturedModelData);
+        EntityModelLayerRegistry.registerModelLayer(CarolModel.CAROL_COLLAR, CarolModel::getTexturedModelData);
         EntityRendererRegistry.register(ModEntities.CAROL, CarolRenderer::new);
+
 
         EntityModelLayerRegistry.registerModelLayer(TapNoteProjectileModel.TAP_NOTE, TapNoteProjectileModel::getTexturedModelData);
         EntityRendererRegistry.register(ModEntities.TAP_NOTE, TapNoteProjectileRenderer::new);

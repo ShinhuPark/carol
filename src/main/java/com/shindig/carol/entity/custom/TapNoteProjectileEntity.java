@@ -1,18 +1,23 @@
 package com.shindig.carol.entity.custom;
 
+import com.shindig.carol.entity.ModDamageTypes;
 import com.shindig.carol.entity.ModEntities;
 import com.shindig.carol.item.ModItems;
 import com.shindig.carol.sound.ModSounds;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
 import net.minecraft.client.util.math.Vector2f;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ProjectileDeflection;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.PersistentProjectileEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.particle.BlockStateParticleEffect;
+import net.minecraft.particle.ParticleTypes;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.util.hit.BlockHitResult;
@@ -93,15 +98,16 @@ public class TapNoteProjectileEntity extends PersistentProjectileEntity {
     protected void onEntityHit(EntityHitResult entityHitResult) {
         //super.onEntityHit(entityHitResult);
         Entity entity = entityHitResult.getEntity();
-        DamageSource damageSource = this.getDamageSources().thrown(this, this.getOwner());
 
+        DamageSource damageSource = ModDamageTypes.of(this.getWorld(), ModDamageTypes.TAP_NOTE, this, this.getOwner());
         //check if it successfully damaged the entity
         if (entity.damage(damageSource, 4)) {
-            if (entity instanceof CarolEntity carol) {
-                if (!this.getWorld().isClient && this.getPierceLevel() <= 0) {
-                    carol.setStuckTapNoteCount(carol.getStuckTapNoteCount() + 1);
+            if (entity instanceof LivingEntity) {
+                if (entity instanceof CarolEntity carol) {
+                    if (!this.getWorld().isClient && this.getPierceLevel() <= 0) {
+                        carol.setStuckTapNoteCount(carol.getStuckTapNoteCount() + 1);
+                    }
                 }
-
 
                 this.playSound(ModSounds.MAIMAI_ANSWER, 2.0f, 1.0f);
 
@@ -117,10 +123,20 @@ public class TapNoteProjectileEntity extends PersistentProjectileEntity {
                     this.discard();
                 }
 
-            } else { //if it failed damaging entity, bounce it off
-                //entity.setFireTicks(j);
+            }
+        } else {
+            if (entity instanceof CarolEntity) {
+                World world = this.getWorld();
+                if(!world.isClient()) {
+                    ((ServerWorld) world).spawnParticles(ParticleTypes.SWEEP_ATTACK,
+                            this.getX(), this.getY(), this.getZ(), 0, 0, 0, 0, 0);
+                    ((ServerWorld) world).spawnParticles(ParticleTypes.ELECTRIC_SPARK,
+                            this.getX(), this.getY(), this.getZ(), 20, 0, 0, 0, 2);
+                }
+                this.playSound(ModSounds.MAIMAI_BREAK_CRITICAL, 1.0f, 1.0f);
+
                 this.deflect(ProjectileDeflection.SIMPLE, entity, this.getOwner(), false);
-                this.setVelocity(this.getVelocity().multiply(0.2));
+                this.setVelocity(this.getVelocity().multiply(2.0));
                 if (!this.getWorld().isClient && this.getVelocity().lengthSquared() < 1.0E-7) {
                     if (this.pickupType == PersistentProjectileEntity.PickupPermission.ALLOWED) {
                         this.dropStack(this.asItemStack(), 0.1F);

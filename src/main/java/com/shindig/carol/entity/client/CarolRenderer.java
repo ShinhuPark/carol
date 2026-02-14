@@ -12,13 +12,20 @@ import net.minecraft.util.Identifier;
 public class CarolRenderer extends MobEntityRenderer<CarolEntity, CarolModel<CarolEntity>> {
     public CarolRenderer(EntityRendererFactory.Context context) {
         super(context, new CarolModel<>(context.getPart(CarolModel.CAROL)), 0.75f);
-        //this.addFeature(new StuckArrowsFeatureRenderer<>(context, this));
         this.addFeature(new CarolStuckTapNotesFeatureRenderer<>(context, this));
+        this.addFeature(new CarolCollarFeatureRenderer(this, context.getModelLoader()));
     }
 
     @Override
     public Identifier getTexture(CarolEntity entity) {
-        return Identifier.of(Carol.MOD_ID, "textures/entity/carol/carol.png");
+        switch (entity.getState()) {
+            case SLEEPING:
+                return Identifier.of(Carol.MOD_ID, "textures/entity/carol/carol_sleeping.png");
+            case PARRYING:
+                return Identifier.of(Carol.MOD_ID, "textures/entity/carol/carol_parrying.png");
+            default:
+                return Identifier.of(Carol.MOD_ID, "textures/entity/carol/carol.png");
+        }
     }
 
     @Override

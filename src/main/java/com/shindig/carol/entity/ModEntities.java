@@ -3,6 +3,7 @@ package com.shindig.carol.entity;
 import com.shindig.carol.Carol;
 import com.shindig.carol.entity.custom.CarolEntity;
 import com.shindig.carol.entity.custom.TapNoteProjectileEntity;
+import com.shindig.carol.entity.data.CarolTrackedDataHandlerRegistry;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SpawnGroup;
 import net.minecraft.registry.Registries;
@@ -21,6 +22,7 @@ public class ModEntities {
                     .dimensions(0.5f, 0.5f).build());
 
     public static void initialize() {
+        CarolTrackedDataHandlerRegistry.initialize();
         Carol.LOGGER.info("Registering Mod Entities for " + Carol.MOD_ID);
     }
 }

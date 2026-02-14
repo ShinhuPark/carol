@@ -18,6 +18,7 @@ import java.util.List;
 
 public class CarolModel<T extends CarolEntity> extends SinglePartEntityModel<T> {
     public static final EntityModelLayer CAROL = new EntityModelLayer(Identifier.of(Carol.MOD_ID, "carol"), "main");
+    public static final EntityModelLayer CAROL_COLLAR = new EntityModelLayer(Identifier.of(Carol.MOD_ID, "carol_collar"), "carol_collar");
 
     private final List<ModelPart> parts;
     private final List<ModelPart> STUCKABLE_PARTS;
@@ -39,21 +40,27 @@ public class CarolModel<T extends CarolEntity> extends SinglePartEntityModel<T> 
     private final ModelPart whisker;
     private final ModelPart fishR;
     private final ModelPart fishL;
+    private final ModelPart hairsideL;
+    private final ModelPart hairsideR;
     private final ModelPart arm_L;
     private final ModelPart arm_R;
+    private final ModelPart broom;
     private final ModelPart leg_L;
     private final ModelPart leg_R;
-    private final ModelPart bell;
     private final ModelPart tail1;
     private final ModelPart tail2;
     private final ModelPart tail3;
     private final ModelPart tail4;
     private final ModelPart tail5;
+    private final ModelPart collar;
+    private final ModelPart bell;
     private final ModelPart skirt;
     private final ModelPart top;
     private final ModelPart bottom;
     private final ModelPart panty;
     private final ModelPart pantyline;
+    private final ModelPart pantyR;
+    private final ModelPart pantyL;
     public CarolModel(ModelPart root) {
         this.root = root.getChild("root");
         this.torso = this.root.getChild("torso");
@@ -72,21 +79,27 @@ public class CarolModel<T extends CarolEntity> extends SinglePartEntityModel<T> 
         this.whisker = this.head.getChild("whisker");
         this.fishR = this.head.getChild("fishR");
         this.fishL = this.head.getChild("fishL");
+        this.hairsideL = this.head.getChild("hairsideL");
+        this.hairsideR = this.head.getChild("hairsideR");
         this.arm_L = this.torso.getChild("arm_L");
         this.arm_R = this.torso.getChild("arm_R");
+        this.broom = this.arm_R.getChild("broom");
         this.leg_L = this.torso.getChild("leg_L");
         this.leg_R = this.torso.getChild("leg_R");
-        this.bell = this.torso.getChild("bell");
         this.tail1 = this.torso.getChild("tail1");
         this.tail2 = this.tail1.getChild("tail2");
         this.tail3 = this.tail2.getChild("tail3");
         this.tail4 = this.tail3.getChild("tail4");
         this.tail5 = this.tail4.getChild("tail5");
+        this.collar = this.torso.getChild("collar");
+        this.bell = this.collar.getChild("bell");
         this.skirt = this.torso.getChild("skirt");
         this.top = this.skirt.getChild("top");
         this.bottom = this.skirt.getChild("bottom");
         this.panty = this.torso.getChild("panty");
         this.pantyline = this.panty.getChild("pantyline");
+        this.pantyR = this.panty.getChild("pantyR");
+        this.pantyL = this.panty.getChild("pantyL");
 
         this.parts = (List<ModelPart>)root.traverse().filter(part -> !part.isEmpty()).collect(ImmutableList.toImmutableList());
         this.STUCKABLE_PARTS = Arrays.asList(this.head, leg_L, leg_R);
@@ -99,8 +112,7 @@ public class CarolModel<T extends CarolEntity> extends SinglePartEntityModel<T> 
         ModelPartData root = modelPartData.addChild("root", ModelPartBuilder.create(), ModelTransform.pivot(0.0F, 24.0F, 0.0F));
 
         ModelPartData torso = root.addChild("torso", ModelPartBuilder.create().uv(37, 0).cuboid(-3.5F, -2.75F, -2.0F, 7.0F, 1.0F, 4.0F, new Dilation(0.001F))
-                .uv(0, 35).cuboid(-3.0F, -6.0F, -1.5F, 6.0F, 6.0F, 3.0F, new Dilation(0.001F))
-                .uv(19, 35).cuboid(-3.5F, -6.5F, -2.0F, 7.0F, 1.0F, 4.0F, new Dilation(0.001F)), ModelTransform.pivot(0.0F, -8.0F, 0.0F));
+                .uv(0, 35).cuboid(-3.0F, -6.0F, -1.5F, 6.0F, 6.0F, 3.0F, new Dilation(0.001F)), ModelTransform.pivot(0.0F, -8.0F, 0.0F));
 
         ModelPartData apronR_r1 = torso.addChild("apronR_r1", ModelPartBuilder.create().uv(18, 103).cuboid(-0.5F, -1.7574F, 3.4926F, 2.0F, 5.0F, 1.0F, new Dilation(0.0F)), ModelTransform.of(0.0F, 1.0F, 0.0F, -2.3562F, -0.3927F, 3.1416F));
 
@@ -121,13 +133,13 @@ public class CarolModel<T extends CarolEntity> extends SinglePartEntityModel<T> 
         ModelPartData head = torso.addChild("head", ModelPartBuilder.create().uv(58, 53).cuboid(-3.0F, -9.5F, -2.5F, 6.0F, 2.0F, 2.0F, new Dilation(0.0F))
                 .uv(0, 0).cuboid(-4.5F, -9.0F, -4.5F, 9.0F, 9.0F, 9.0F, new Dilation(0.0F)), ModelTransform.pivot(0.0F, -6.0F, 0.0F));
 
-        ModelPartData earL = head.addChild("earL", ModelPartBuilder.create().uv(0, 45).cuboid(-1.6218F, 0.0126F, -1.5F, 3.0F, 8.0F, 3.0F, new Dilation(0.0F)), ModelTransform.of(6.5F, -10.0F, 1.5F, 0.0F, 0.0F, 0.7854F));
+        ModelPartData earL = head.addChild("earL", ModelPartBuilder.create().uv(0, 45).cuboid(-1.6217F, 0.0126F, -1.5F, 3.0F, 8.0F, 3.0F, new Dilation(0.0F)), ModelTransform.of(6.5F, -10.0F, 1.5F, 0.0F, 0.0F, 0.7854F));
 
         ModelPartData earL_r1 = earL.addChild("earL_r1", ModelPartBuilder.create().uv(45, 47).cuboid(-0.0858F, -0.0429F, -1.5F, 3.0F, 7.0F, 3.0F, new Dilation(-0.001F)), ModelTransform.of(-1.536F, 0.0555F, 0.0F, 0.0F, 0.0F, 0.3927F));
 
         ModelPartData earL_r2 = earL.addChild("earL_r2", ModelPartBuilder.create().uv(50, 13).cuboid(-3.0858F, -0.0429F, -1.5F, 3.0F, 7.0F, 3.0F, new Dilation(-0.002F)), ModelTransform.of(1.464F, 0.0555F, 0.0F, 0.0F, 0.0F, -0.3927F));
 
-        ModelPartData earR = head.addChild("earR", ModelPartBuilder.create().uv(45, 35).cuboid(-1.3782F, 0.0126F, -1.5F, 3.0F, 8.0F, 3.0F, new Dilation(0.0F)), ModelTransform.of(-6.5F, -10.0F, 1.5F, 0.0F, 0.0F, -0.7854F));
+        ModelPartData earR = head.addChild("earR", ModelPartBuilder.create().uv(45, 35).cuboid(-1.3783F, 0.0126F, -1.5F, 3.0F, 8.0F, 3.0F, new Dilation(0.0F)), ModelTransform.of(-6.5F, -10.0F, 1.5F, 0.0F, 0.0F, -0.7854F));
 
         ModelPartData earR_r1 = earR.addChild("earR_r1", ModelPartBuilder.create().uv(13, 53).cuboid(-2.9142F, -0.0429F, -1.5F, 3.0F, 7.0F, 3.0F, new Dilation(-0.001F)), ModelTransform.of(1.536F, 0.0555F, 0.0F, 0.0F, 0.0F, -0.3927F));
 
@@ -265,6 +277,18 @@ public class CarolModel<T extends CarolEntity> extends SinglePartEntityModel<T> 
 
         ModelPartData cube_r14 = fishL.addChild("cube_r14", ModelPartBuilder.create().uv(105, 94).cuboid(-0.5F, -1.0F, -1.0F, 1.0F, 2.0F, 2.0F, new Dilation(0.003F)), ModelTransform.of(0.0F, 0.0F, 1.5F, 0.7854F, 0.0F, 0.0F));
 
+        ModelPartData hairsideL = head.addChild("hairsideL", ModelPartBuilder.create().uv(1, 1).cuboid(0.25F, -0.5F, -0.5F, 2.0F, 1.0F, 1.0F, new Dilation(0.0F)), ModelTransform.of(4.5381F, -4.5732F, 2.0732F, 0.7566F, -0.3614F, 0.1572F));
+
+        ModelPartData hairsideL_r1 = hairsideL.addChild("hairsideL_r1", ModelPartBuilder.create().uv(1, 1).cuboid(0.0F, -0.5F, -1.0F, 2.0F, 1.0F, 1.0F, new Dilation(0.0F)), ModelTransform.of(4.0978F, 0.0F, -0.2654F, 0.0F, 0.7854F, 0.0F));
+
+        ModelPartData hairsideL_r2 = hairsideL.addChild("hairsideL_r2", ModelPartBuilder.create().uv(1, 1).cuboid(0.0F, -0.5F, -1.0F, 2.0F, 1.0F, 1.0F, new Dilation(0.0F)), ModelTransform.of(2.25F, 0.0F, 0.5F, 0.0F, 0.3927F, 0.0F));
+
+        ModelPartData hairsideR = head.addChild("hairsideR", ModelPartBuilder.create().uv(1, 1).mirrored().cuboid(-2.25F, -0.5F, -0.5F, 2.0F, 1.0F, 1.0F, new Dilation(0.0F)).mirrored(false), ModelTransform.of(-4.5381F, -4.5732F, 2.0732F, 0.7566F, 0.3614F, -0.1572F));
+
+        ModelPartData hairsideR_r1 = hairsideR.addChild("hairsideR_r1", ModelPartBuilder.create().uv(1, 1).mirrored().cuboid(-2.0F, -0.5F, -1.0F, 2.0F, 1.0F, 1.0F, new Dilation(0.0F)).mirrored(false), ModelTransform.of(-4.0978F, 0.0F, -0.2654F, 0.0F, -0.7854F, 0.0F));
+
+        ModelPartData hairsideR_r2 = hairsideR.addChild("hairsideR_r2", ModelPartBuilder.create().uv(1, 1).mirrored().cuboid(-2.0F, -0.5F, -1.0F, 2.0F, 1.0F, 1.0F, new Dilation(0.0F)).mirrored(false), ModelTransform.of(-2.25F, 0.0F, 0.5F, 0.0F, -0.3927F, 0.0F));
+
         ModelPartData arm_L = torso.addChild("arm_L", ModelPartBuilder.create(), ModelTransform.pivot(3.0F, -5.25F, 0.0F));
 
         ModelPartData pawL_r1 = arm_L.addChild("pawL_r1", ModelPartBuilder.create().uv(83, 109).mirrored().cuboid(-1.0F, 4.3F, -1.0F, 2.0F, 2.0F, 2.0F, new Dilation(0.0F)).mirrored(false)
@@ -280,18 +304,63 @@ public class CarolModel<T extends CarolEntity> extends SinglePartEntityModel<T> 
                 .uv(77, 103).cuboid(-1.0F, 4.0F, -1.0F, 2.0F, 2.0F, 2.0F, new Dilation(0.2F))
                 .uv(33, 87).cuboid(-1.0F, 0.0F, -1.0F, 2.0F, 6.0F, 2.0F, new Dilation(0.0F)), ModelTransform.of(0.0F, -0.25F, -0.5F, 0.0F, 0.0F, 0.48F));
 
+        ModelPartData broom = arm_R.addChild("broom", ModelPartBuilder.create().uv(113, 94).cuboid(-0.5F, -12.0F, -0.5F, 1.0F, 12.0F, 1.0F, new Dilation(0.0F))
+                .uv(112, 89).cuboid(-1.0F, -14.0F, -1.0F, 2.0F, 2.0F, 2.0F, new Dilation(0.0F))
+                .uv(120, 100).cuboid(-0.5F, -20.0F, -0.5F, 1.0F, 6.0F, 1.0F, new Dilation(0.0F)), ModelTransform.of(-2.25F, 4.25F, -0.5F, 1.5708F, 0.0F, -1.0472F));
+
+        ModelPartData cube_r15 = broom.addChild("cube_r15", ModelPartBuilder.create().uv(120, 100).cuboid(-0.5F, -6.0F, -0.5F, 1.0F, 6.0F, 1.0F, new Dilation(0.0F)), ModelTransform.of(0.0F, -14.0F, 0.0F, 0.3999F, 0.1796F, -0.3999F));
+
+        ModelPartData cube_r16 = broom.addChild("cube_r16", ModelPartBuilder.create().uv(120, 100).cuboid(-0.5F, -6.0F, -0.5F, 1.0F, 6.0F, 1.0F, new Dilation(0.0F)), ModelTransform.of(0.0F, -14.0F, 0.0F, 0.4272F, 0.0916F, -0.1983F));
+
+        ModelPartData cube_r17 = broom.addChild("cube_r17", ModelPartBuilder.create().uv(120, 100).cuboid(-0.5F, -6.0F, -0.5F, 1.0F, 6.0F, 1.0F, new Dilation(0.0F)), ModelTransform.of(0.0F, -14.0F, 0.0F, 0.4272F, -0.0916F, 0.1983F));
+
+        ModelPartData cube_r18 = broom.addChild("cube_r18", ModelPartBuilder.create().uv(120, 100).cuboid(-0.5F, -6.0F, -0.5F, 1.0F, 6.0F, 1.0F, new Dilation(0.0F)), ModelTransform.of(0.0F, -14.0F, 0.0F, 0.3999F, -0.1796F, 0.3999F));
+
+        ModelPartData cube_r19 = broom.addChild("cube_r19", ModelPartBuilder.create().uv(120, 100).cuboid(-0.5F, -6.0F, -0.5F, 1.0F, 6.0F, 1.0F, new Dilation(0.0F)), ModelTransform.of(0.0F, -14.0F, 0.0F, 0.4363F, 0.0F, 0.0F));
+
+        ModelPartData cube_r20 = broom.addChild("cube_r20", ModelPartBuilder.create().uv(120, 100).cuboid(-0.5F, -6.0F, -0.5F, 1.0F, 6.0F, 1.0F, new Dilation(0.0F)), ModelTransform.of(0.0F, -14.0F, 0.0F, 0.1983F, 0.0916F, -0.4272F));
+
+        ModelPartData cube_r21 = broom.addChild("cube_r21", ModelPartBuilder.create().uv(120, 100).cuboid(-0.5F, -6.0F, -0.5F, 1.0F, 6.0F, 1.0F, new Dilation(0.0F)), ModelTransform.of(0.0F, -14.0F, 0.0F, 0.2132F, 0.0469F, -0.2132F));
+
+        ModelPartData cube_r22 = broom.addChild("cube_r22", ModelPartBuilder.create().uv(120, 100).cuboid(-0.5F, -6.0F, -0.5F, 1.0F, 6.0F, 1.0F, new Dilation(0.0F)), ModelTransform.of(0.0F, -14.0F, 0.0F, 0.2132F, -0.0469F, 0.2132F));
+
+        ModelPartData cube_r23 = broom.addChild("cube_r23", ModelPartBuilder.create().uv(120, 100).cuboid(-0.5F, -6.0F, -0.5F, 1.0F, 6.0F, 1.0F, new Dilation(0.0F)), ModelTransform.of(0.0F, -14.0F, 0.0F, 0.1983F, -0.0916F, 0.4272F));
+
+        ModelPartData cube_r24 = broom.addChild("cube_r24", ModelPartBuilder.create().uv(120, 100).cuboid(-0.5F, -6.0F, -0.5F, 1.0F, 6.0F, 1.0F, new Dilation(0.0F)), ModelTransform.of(0.0F, -14.0F, 0.0F, 0.2182F, 0.0F, 0.0F));
+
+        ModelPartData cube_r25 = broom.addChild("cube_r25", ModelPartBuilder.create().uv(120, 100).cuboid(-0.5F, -6.0F, -0.5F, 1.0F, 6.0F, 1.0F, new Dilation(0.0F)), ModelTransform.of(0.0F, -14.0F, 0.0F, -0.3999F, -0.1796F, -0.3999F));
+
+        ModelPartData cube_r26 = broom.addChild("cube_r26", ModelPartBuilder.create().uv(120, 100).cuboid(-0.5F, -6.0F, -0.5F, 1.0F, 6.0F, 1.0F, new Dilation(0.0F)), ModelTransform.of(0.0F, -14.0F, 0.0F, -0.4272F, -0.0916F, -0.1983F));
+
+        ModelPartData cube_r27 = broom.addChild("cube_r27", ModelPartBuilder.create().uv(120, 100).cuboid(-0.5F, -6.0F, -0.5F, 1.0F, 6.0F, 1.0F, new Dilation(0.0F)), ModelTransform.of(0.0F, -14.0F, 0.0F, -0.4363F, 0.0F, 0.0F));
+
+        ModelPartData cube_r28 = broom.addChild("cube_r28", ModelPartBuilder.create().uv(120, 100).cuboid(-0.5F, -6.0F, -0.5F, 1.0F, 6.0F, 1.0F, new Dilation(0.0F)), ModelTransform.of(0.0F, -14.0F, 0.0F, -0.4272F, 0.0916F, 0.1983F));
+
+        ModelPartData cube_r29 = broom.addChild("cube_r29", ModelPartBuilder.create().uv(120, 100).cuboid(-0.5F, -6.0F, -0.5F, 1.0F, 6.0F, 1.0F, new Dilation(0.0F)), ModelTransform.of(0.0F, -14.0F, 0.0F, -0.3999F, 0.1796F, 0.3999F));
+
+        ModelPartData cube_r30 = broom.addChild("cube_r30", ModelPartBuilder.create().uv(120, 100).cuboid(-0.5F, -6.0F, -0.5F, 1.0F, 6.0F, 1.0F, new Dilation(0.0F)), ModelTransform.of(0.0F, -14.0F, 0.0F, -0.1983F, -0.0916F, -0.4272F));
+
+        ModelPartData cube_r31 = broom.addChild("cube_r31", ModelPartBuilder.create().uv(120, 100).cuboid(-0.5F, -6.0F, -0.5F, 1.0F, 6.0F, 1.0F, new Dilation(0.0F)), ModelTransform.of(0.0F, -14.0F, 0.0F, -0.2132F, -0.0469F, -0.2132F));
+
+        ModelPartData cube_r32 = broom.addChild("cube_r32", ModelPartBuilder.create().uv(120, 100).cuboid(-0.5F, -6.0F, -0.5F, 1.0F, 6.0F, 1.0F, new Dilation(0.0F)), ModelTransform.of(0.0F, -14.0F, 0.0F, -0.2182F, 0.0F, 0.0F));
+
+        ModelPartData cube_r33 = broom.addChild("cube_r33", ModelPartBuilder.create().uv(120, 100).cuboid(-0.5F, -6.0F, -0.5F, 1.0F, 6.0F, 1.0F, new Dilation(0.0F)), ModelTransform.of(0.0F, -14.0F, 0.0F, -0.2132F, 0.0469F, 0.2132F));
+
+        ModelPartData cube_r34 = broom.addChild("cube_r34", ModelPartBuilder.create().uv(120, 100).cuboid(-0.5F, -6.0F, -0.5F, 1.0F, 6.0F, 1.0F, new Dilation(0.0F)), ModelTransform.of(0.0F, -14.0F, 0.0F, -0.1983F, 0.0916F, 0.4272F));
+
+        ModelPartData cube_r35 = broom.addChild("cube_r35", ModelPartBuilder.create().uv(120, 100).cuboid(-0.5F, -6.0F, -0.5F, 1.0F, 6.0F, 1.0F, new Dilation(0.0F)), ModelTransform.of(0.0F, -14.0F, 0.0F, 0.0F, 0.0F, -0.4363F));
+
+        ModelPartData cube_r36 = broom.addChild("cube_r36", ModelPartBuilder.create().uv(120, 100).cuboid(-0.5F, -6.0F, -0.5F, 1.0F, 6.0F, 1.0F, new Dilation(0.0F)), ModelTransform.of(0.0F, -14.0F, 0.0F, 0.0F, 0.0F, -0.2182F));
+
+        ModelPartData cube_r37 = broom.addChild("cube_r37", ModelPartBuilder.create().uv(120, 100).cuboid(-0.5F, -6.0F, -0.5F, 1.0F, 6.0F, 1.0F, new Dilation(0.0F)), ModelTransform.of(0.0F, -14.0F, 0.0F, 0.0F, 0.0F, 0.4363F));
+
+        ModelPartData cube_r38 = broom.addChild("cube_r38", ModelPartBuilder.create().uv(120, 100).cuboid(-0.5F, -6.0F, -0.5F, 1.0F, 6.0F, 1.0F, new Dilation(0.0F)), ModelTransform.of(0.0F, -14.0F, 0.0F, 0.0F, 0.0F, 0.2182F));
+
         ModelPartData leg_L = torso.addChild("leg_L", ModelPartBuilder.create().uv(32, 41).cuboid(-1.5F, 0.0F, -1.5F, 3.0F, 8.0F, 3.0F, new Dilation(0.0F))
                 .uv(26, 59).cuboid(-1.5F, 6.0F, -2.25F, 3.0F, 2.0F, 4.0F, new Dilation(0.2F)), ModelTransform.pivot(2.0F, 0.0F, 0.0F));
 
         ModelPartData leg_R = torso.addChild("leg_R", ModelPartBuilder.create().uv(19, 41).cuboid(-1.5F, 0.0F, -1.5F, 3.0F, 8.0F, 3.0F, new Dilation(0.0F))
                 .uv(60, 58).cuboid(-1.5F, 6.0F, -2.25F, 3.0F, 2.0F, 4.0F, new Dilation(0.2F)), ModelTransform.pivot(-2.0F, 0.0F, 0.0F));
-
-        ModelPartData bell = torso.addChild("bell", ModelPartBuilder.create().uv(59, 97).cuboid(-1.5F, 0.25F, -1.0F, 1.0F, 2.0F, 2.0F, new Dilation(0.0F))
-                .uv(42, 104).cuboid(-0.5F, 0.0F, -1.0F, 1.0F, 1.0F, 2.0F, new Dilation(0.0F))
-                .uv(2, 90).cuboid(-1.0F, 0.25F, -0.5F, 2.0F, 2.0F, 1.0F, new Dilation(-0.001F))
-                .uv(51, 104).cuboid(-1.25F, 1.5F, -1.0F, 1.0F, 1.0F, 2.0F, new Dilation(0.0F))
-                .uv(60, 104).cuboid(0.25F, 1.5F, -1.0F, 1.0F, 1.0F, 2.0F, new Dilation(0.0F))
-                .uv(68, 97).cuboid(0.5F, 0.25F, -1.0F, 1.0F, 2.0F, 2.0F, new Dilation(0.0F)), ModelTransform.pivot(0.0F, -6.25F, -3.0F));
 
         ModelPartData tail1 = torso.addChild("tail1", ModelPartBuilder.create().uv(63, 20).cuboid(-1.0F, -1.0F, -0.25F, 2.0F, 2.0F, 4.0F, new Dilation(0.0F)), ModelTransform.of(0.0F, -0.75F, 1.75F, -1.0374F, 0.3133F, -0.481F));
 
@@ -303,9 +372,18 @@ public class CarolModel<T extends CarolEntity> extends SinglePartEntityModel<T> 
 
         ModelPartData tail5 = tail4.addChild("tail5", ModelPartBuilder.create().uv(0, 65).cuboid(-1.0F, -1.0F, -0.25F, 2.0F, 2.0F, 4.0F, new Dilation(0.0F)), ModelTransform.of(0.0F, 0.0F, 3.75F, 0.1745F, 0.2618F, 0.0F));
 
-        ModelPartData skirt = torso.addChild("skirt", ModelPartBuilder.create(), ModelTransform.pivot(0.0F, 1.0F, 0.0F));
+        ModelPartData collar = torso.addChild("collar", ModelPartBuilder.create().uv(1, 113).cuboid(-3.5F, -14.25F, -3.0F, 7.0F, 1.0F, 5.0F, new Dilation(0.002F)), ModelTransform.pivot(0.0F, 8.0F, 0.0F));
 
-        ModelPartData top = skirt.addChild("top", ModelPartBuilder.create(), ModelTransform.pivot(0.0F, -2.5F, 0.0F));
+        ModelPartData bell = collar.addChild("bell", ModelPartBuilder.create().uv(59, 97).cuboid(-1.5F, 0.25F, -1.0F, 1.0F, 2.0F, 2.0F, new Dilation(0.0F))
+                .uv(42, 104).cuboid(-0.5F, 0.0F, -1.0F, 1.0F, 1.0F, 2.0F, new Dilation(0.0F))
+                .uv(2, 90).cuboid(-1.0F, 0.25F, -0.5F, 2.0F, 2.0F, 1.0F, new Dilation(-0.001F))
+                .uv(51, 104).cuboid(-1.25F, 1.5F, -1.0F, 1.0F, 1.0F, 2.0F, new Dilation(0.0F))
+                .uv(60, 104).cuboid(0.25F, 1.5F, -1.0F, 1.0F, 1.0F, 2.0F, new Dilation(0.0F))
+                .uv(68, 97).cuboid(0.5F, 0.25F, -1.0F, 1.0F, 2.0F, 2.0F, new Dilation(0.0F)), ModelTransform.pivot(0.0F, -14.25F, -3.0F));
+
+        ModelPartData skirt = torso.addChild("skirt", ModelPartBuilder.create(), ModelTransform.pivot(0.0F, 0.0F, 0.0F));
+
+        ModelPartData top = skirt.addChild("top", ModelPartBuilder.create(), ModelTransform.pivot(0.0F, -1.5F, 0.0F));
 
         ModelPartData skirt_top_r1 = top.addChild("skirt_top_r1", ModelPartBuilder.create().uv(107, 9).cuboid(-1.0F, 0.7975F, 0.4725F, 2.0F, 2.0F, 1.0F, new Dilation(0.0F)), ModelTransform.of(0.0F, 0.5F, 0.0F, -1.9635F, -0.6545F, -3.1416F));
 
@@ -321,17 +399,33 @@ public class CarolModel<T extends CarolEntity> extends SinglePartEntityModel<T> 
 
         ModelPartData skirt_top_r7 = top.addChild("skirt_top_r7", ModelPartBuilder.create().uv(103, 106).cuboid(-1.0F, 0.7975F, 0.4725F, 2.0F, 2.0F, 1.0F, new Dilation(0.0F)), ModelTransform.of(0.0F, 0.5F, 0.0F, 1.1781F, 0.6545F, 0.0F));
 
-        ModelPartData skirt_top_r8 = top.addChild("skirt_top_r8", ModelPartBuilder.create().uv(0, 107).cuboid(-1.0F, 0.7975F, 0.4725F, 2.0F, 2.0F, 1.0F, new Dilation(0.0F)), ModelTransform.of(0.0F, 0.5F, 0.0F, 1.1781F, 0.0F, 0.0F));
+        ModelPartData skirt_top_r8 = top.addChild("skirt_top_r8", ModelPartBuilder.create().uv(0, 107).mirrored().cuboid(-1.0F, 0.7975F, 0.4725F, 2.0F, 2.0F, 1.0F, new Dilation(0.0F)).mirrored(false), ModelTransform.of(0.0F, 0.5F, 0.0F, -1.9635F, -1.2217F, 3.1416F));
 
-        ModelPartData skirt_top_r9 = top.addChild("skirt_top_r9", ModelPartBuilder.create().uv(107, 5).cuboid(-1.0F, 0.7975F, 0.4725F, 2.0F, 2.0F, 1.0F, new Dilation(0.0F)), ModelTransform.of(0.0F, 0.5F, 0.0F, 1.1781F, -0.5672F, 0.0F));
+        ModelPartData skirt_top_r9 = top.addChild("skirt_top_r9", ModelPartBuilder.create().uv(106, 39).mirrored().cuboid(-1.0F, 0.7975F, 0.4725F, 2.0F, 2.0F, 1.0F, new Dilation(0.0F)).mirrored(false), ModelTransform.of(0.0F, 0.0F, 0.0F, -1.9635F, -1.2217F, 3.1416F));
 
-        ModelPartData skirt_top_r10 = top.addChild("skirt_top_r10", ModelPartBuilder.create().uv(106, 43).cuboid(-1.0F, 0.7975F, 0.4725F, 2.0F, 2.0F, 1.0F, new Dilation(0.0F)), ModelTransform.of(0.0F, 0.0F, 0.0F, 1.1781F, 0.6545F, 0.0F));
+        ModelPartData skirt_top_r10 = top.addChild("skirt_top_r10", ModelPartBuilder.create().uv(0, 107).mirrored().cuboid(-1.0F, 0.7975F, -1.4725F, 2.0F, 2.0F, 1.0F, new Dilation(0.0F)).mirrored(false), ModelTransform.of(0.0F, 0.5F, 0.0F, 1.9635F, 1.2217F, 3.1416F));
 
-        ModelPartData skirt_top_r11 = top.addChild("skirt_top_r11", ModelPartBuilder.create().uv(106, 47).cuboid(-1.0F, 0.7975F, 0.4725F, 2.0F, 2.0F, 1.0F, new Dilation(0.0F)), ModelTransform.of(0.0F, 0.0F, 0.0F, 1.1781F, -0.5672F, 0.0F));
+        ModelPartData skirt_top_r11 = top.addChild("skirt_top_r11", ModelPartBuilder.create().uv(106, 39).mirrored().cuboid(-1.0F, 0.7975F, -1.4725F, 2.0F, 2.0F, 1.0F, new Dilation(0.0F)).mirrored(false), ModelTransform.of(0.0F, 0.0F, 0.0F, 1.9635F, 1.2217F, 3.1416F));
 
-        ModelPartData skirt_top_r12 = top.addChild("skirt_top_r12", ModelPartBuilder.create().uv(106, 39).cuboid(-1.0F, 0.7975F, 0.4725F, 2.0F, 2.0F, 1.0F, new Dilation(0.0F)), ModelTransform.of(0.0F, 0.0F, 0.0F, 1.1781F, 0.0F, 0.0F));
+        ModelPartData skirt_top_r12 = top.addChild("skirt_top_r12", ModelPartBuilder.create().uv(0, 107).cuboid(-1.0F, 0.7975F, -1.4725F, 2.0F, 2.0F, 1.0F, new Dilation(0.0F)), ModelTransform.of(0.0F, 0.5F, 0.0F, 1.9635F, -1.2217F, -3.1416F));
 
-        ModelPartData bottom = skirt.addChild("bottom", ModelPartBuilder.create(), ModelTransform.pivot(0.0F, 0.0F, 0.0F));
+        ModelPartData skirt_top_r13 = top.addChild("skirt_top_r13", ModelPartBuilder.create().uv(106, 39).cuboid(-1.0F, 0.7975F, -1.4725F, 2.0F, 2.0F, 1.0F, new Dilation(0.0F)), ModelTransform.of(0.0F, 0.0F, 0.0F, 1.9635F, -1.2217F, -3.1416F));
+
+        ModelPartData skirt_top_r14 = top.addChild("skirt_top_r14", ModelPartBuilder.create().uv(0, 107).cuboid(-1.0F, 0.7975F, 0.4725F, 2.0F, 2.0F, 1.0F, new Dilation(0.0F)), ModelTransform.of(0.0F, 0.5F, 0.0F, -1.9635F, 1.2217F, -3.1416F));
+
+        ModelPartData skirt_top_r15 = top.addChild("skirt_top_r15", ModelPartBuilder.create().uv(106, 39).cuboid(-1.0F, 0.7975F, 0.4725F, 2.0F, 2.0F, 1.0F, new Dilation(0.0F)), ModelTransform.of(0.0F, 0.0F, 0.0F, -1.9635F, 1.2217F, -3.1416F));
+
+        ModelPartData skirt_top_r16 = top.addChild("skirt_top_r16", ModelPartBuilder.create().uv(0, 107).cuboid(-1.0F, 0.7975F, 0.4725F, 2.0F, 2.0F, 1.0F, new Dilation(0.0F)), ModelTransform.of(0.0F, 0.5F, 0.0F, 1.1781F, 0.0F, 0.0F));
+
+        ModelPartData skirt_top_r17 = top.addChild("skirt_top_r17", ModelPartBuilder.create().uv(107, 5).cuboid(-1.0F, 0.7975F, 0.4725F, 2.0F, 2.0F, 1.0F, new Dilation(0.0F)), ModelTransform.of(0.0F, 0.5F, 0.0F, 1.1781F, -0.5672F, 0.0F));
+
+        ModelPartData skirt_top_r18 = top.addChild("skirt_top_r18", ModelPartBuilder.create().uv(106, 43).cuboid(-1.0F, 0.7975F, 0.4725F, 2.0F, 2.0F, 1.0F, new Dilation(0.0F)), ModelTransform.of(0.0F, 0.0F, 0.0F, 1.1781F, 0.6545F, 0.0F));
+
+        ModelPartData skirt_top_r19 = top.addChild("skirt_top_r19", ModelPartBuilder.create().uv(106, 47).cuboid(-1.0F, 0.7975F, 0.4725F, 2.0F, 2.0F, 1.0F, new Dilation(0.0F)), ModelTransform.of(0.0F, 0.0F, 0.0F, 1.1781F, -0.5672F, 0.0F));
+
+        ModelPartData skirt_top_r20 = top.addChild("skirt_top_r20", ModelPartBuilder.create().uv(106, 39).cuboid(-1.0F, 0.7975F, 0.4725F, 2.0F, 2.0F, 1.0F, new Dilation(0.0F)), ModelTransform.of(0.0F, 0.0F, 0.0F, 1.1781F, 0.0F, 0.0F));
+
+        ModelPartData bottom = skirt.addChild("bottom", ModelPartBuilder.create(), ModelTransform.pivot(0.0F, 1.0F, 0.0F));
 
         ModelPartData skirt_inside_r1 = bottom.addChild("skirt_inside_r1", ModelPartBuilder.create().uv(100, 19).cuboid(-1.5F, 0.9926F, 2.9926F, 3.0F, 4.0F, 1.0F, new Dilation(-0.001F))
                 .uv(9, 95).cuboid(-1.5F, 0.2426F, 3.2426F, 3.0F, 5.0F, 1.0F, new Dilation(0.0F)), ModelTransform.of(0.0F, 0.0F, 0.0F, 0.7854F, -1.1781F, 0.0F));
@@ -381,13 +475,11 @@ public class CarolModel<T extends CarolEntity> extends SinglePartEntityModel<T> 
         ModelPartData skirt_inside_r16 = bottom.addChild("skirt_inside_r16", ModelPartBuilder.create().uv(96, 89).cuboid(-1.5F, 0.9926F, 2.9926F, 3.0F, 4.0F, 1.0F, new Dilation(-0.001F))
                 .uv(42, 89).cuboid(-1.5F, 0.2426F, 3.2426F, 3.0F, 5.0F, 1.0F, new Dilation(0.0F)), ModelTransform.of(0.0F, 0.0F, 0.0F, 0.0F, -1.5708F, 0.7854F));
 
-        ModelPartData panty = torso.addChild("panty", ModelPartBuilder.create().uv(43, 58).cuboid(-3.0F, -3.25F, -3.0F, 4.0F, 1.0F, 4.0F, new Dilation(0.001F))
-                .uv(58, 47).cuboid(1.0F, -3.25F, -3.0F, 4.0F, 1.0F, 4.0F, new Dilation(0.001F))
-                .uv(37, 13).cuboid(0.0F, -2.75F, -3.0F, 2.0F, 1.0F, 4.0F, new Dilation(0.001F)), ModelTransform.pivot(-1.0F, 2.75F, 1.0F));
+        ModelPartData panty = torso.addChild("panty", ModelPartBuilder.create().uv(37, 13).cuboid(-1.0F, 0.25F, -2.0F, 2.0F, 1.0F, 4.0F, new Dilation(0.001F)), ModelTransform.pivot(0.0F, -0.25F, 0.0F));
 
-        ModelPartData pantyribbonL_r1 = panty.addChild("pantyribbonL_r1", ModelPartBuilder.create().uv(42, 37).cuboid(0.0F, -0.5F, 0.0F, 0.0F, 1.0F, 0.0F, new Dilation(0.2F)), ModelTransform.of(1.25F, -2.75F, -3.0F, 0.0F, 0.0F, -1.9635F));
+        ModelPartData pantyribbonL_r1 = panty.addChild("pantyribbonL_r1", ModelPartBuilder.create().uv(42, 37).cuboid(0.0F, -0.5F, 0.0F, 0.0F, 1.0F, 0.0F, new Dilation(0.2F)), ModelTransform.of(0.25F, 0.25F, -2.0F, 0.0F, 0.0F, -1.9635F));
 
-        ModelPartData pantyribbonR_r1 = panty.addChild("pantyribbonR_r1", ModelPartBuilder.create().uv(42, 35).cuboid(0.0F, -0.5F, 0.0F, 0.0F, 1.0F, 0.0F, new Dilation(0.2F)), ModelTransform.of(0.75F, -2.75F, -3.0F, 0.0F, 0.0F, -1.1781F));
+        ModelPartData pantyribbonR_r1 = panty.addChild("pantyribbonR_r1", ModelPartBuilder.create().uv(42, 35).cuboid(0.0F, -0.5F, 0.0F, 0.0F, 1.0F, 0.0F, new Dilation(0.2F)), ModelTransform.of(-0.25F, 0.25F, -2.0F, 0.0F, 0.0F, -1.1781F));
 
         ModelPartData pantyline = panty.addChild("pantyline", ModelPartBuilder.create().uv(42, 39).cuboid(1.0F, -1.5F, -3.0F, 0.0F, 0.0F, 0.0F, new Dilation(0.05F))
                 .uv(43, 35).cuboid(1.0F, -1.5F, -2.5F, 0.0F, 0.0F, 0.0F, new Dilation(0.05F))
@@ -400,7 +492,11 @@ public class CarolModel<T extends CarolEntity> extends SinglePartEntityModel<T> 
                 .uv(44, 38).cuboid(1.0F, -2.5F, 1.0F, 0.0F, 0.0F, 0.0F, new Dilation(0.05F))
                 .uv(44, 35).cuboid(1.0F, -1.5F, 0.0F, 0.0F, 0.0F, 0.0F, new Dilation(0.05F))
                 .uv(43, 40).cuboid(1.0F, -1.5F, 0.5F, 0.0F, 0.0F, 0.0F, new Dilation(0.05F))
-                .uv(42, 40).cuboid(1.0F, -2.0F, -3.0F, 0.0F, 0.0F, 0.0F, new Dilation(0.05F)), ModelTransform.pivot(0.0F, -0.25F, 0.0F));
+                .uv(42, 40).cuboid(1.0F, -2.0F, -3.0F, 0.0F, 0.0F, 0.0F, new Dilation(0.05F)), ModelTransform.pivot(-1.0F, 2.75F, 1.0F));
+
+        ModelPartData pantyR = panty.addChild("pantyR", ModelPartBuilder.create().uv(43, 58).cuboid(-2.0F, -0.5F, -2.0F, 4.0F, 1.0F, 4.0F, new Dilation(0.001F)), ModelTransform.pivot(-2.0F, 0.25F, 0.0F));
+
+        ModelPartData pantyL = panty.addChild("pantyL", ModelPartBuilder.create().uv(58, 47).cuboid(-2.0F, -0.5F, -2.0F, 4.0F, 1.0F, 4.0F, new Dilation(0.001F)), ModelTransform.pivot(2.0F, 0.25F, 0.0F));
         return TexturedModelData.of(modelData, 128, 128);
     }
     @Override
@@ -408,9 +504,17 @@ public class CarolModel<T extends CarolEntity> extends SinglePartEntityModel<T> 
         this.getPart().traverse().forEach(ModelPart::resetTransform);
         this.setHeadAngles(netHeadYaw, headPitch);
 
-
+        this.updateVisibleParts(entity);
         this.animateMovement(CarolAnimations.WALK, limbSwing, limbSwingAmount, 1f, 1f);
         this.updateAnimation(entity.idleAnimationState, CarolAnimations.IDLE, ageInTicks, 1f);
+        this.updateAnimation(entity.sittingAnimationState,CarolAnimations.SITTING, ageInTicks, 1f);
+        this.updateAnimation(entity.sleepingAnimationState,CarolAnimations.SLEEPING, ageInTicks, 1f);
+        this.updateAnimation(entity.parryingAnimationState,CarolAnimations.PARRYING, ageInTicks, 1f);
+    }
+
+    private void updateVisibleParts(CarolEntity carol) {
+        this.collar.visible = carol.isTamed();
+        this.broom.visible = carol.getState().equals(CarolEntity.State.PARRYING);
     }
 
     private void setHeadAngles(float headYaw, float headPitch) {
