@@ -4,6 +4,7 @@ import com.shindig.carol.Carol;
 import com.shindig.carol.entity.ModDamageTypes;
 import com.shindig.carol.entity.ModEntities;
 import com.shindig.carol.entity.data.CarolTrackedDataHandlerRegistry;
+import com.shindig.carol.sound.ModSounds;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.block.*;
 import net.minecraft.block.entity.ChestBlockEntity;
@@ -237,8 +238,10 @@ public class CarolEntity extends TameableEntity {
             return false;
         } else {
 
-            //If damagesource is Tap Note projectile, Carol does not take damage and gets a knockback a
+            //If damagesource is Tap Note projectile, Carol does not take damage and gets a knockback
             if (source.isOf(ModDamageTypes.TAP_NOTE)) {
+
+                this.playSound(ModSounds.CAROL_PACHANG, 0.7f, 1.0f);
                 TapNoteProjectileEntity tapNote = (TapNoteProjectileEntity) source.getSource();
                 Vec3d vec3d = this.getVelocity();
                 Vec3d vec3d2 = new Vec3d( this.getX() - tapNote.getX(), 0.0, this.getZ() - tapNote.getZ());

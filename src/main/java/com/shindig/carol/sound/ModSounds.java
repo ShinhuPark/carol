@@ -19,6 +19,7 @@ public class ModSounds {
     public static final SoundEvent MAIMAI_GOOD = registerSound("maimai_good");
     public static final SoundEvent MAIMAI_NORMAL = registerSound("maimai_normal");
     public static final SoundEvent MAIMAI_ANSWER = registerSound("maimai_answer");
+    public static final SoundEvent CAROL_PACHANG = registerSound("carol_pachang");
 
     // actual registration of all the custom SoundEvents
     private static SoundEvent registerSound(String id) {

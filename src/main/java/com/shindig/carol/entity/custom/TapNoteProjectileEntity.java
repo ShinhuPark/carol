@@ -85,7 +85,7 @@ public class TapNoteProjectileEntity extends PersistentProjectileEntity {
 
         Vec3d vec3d2 = vec3d.normalize().multiply((double) 0.05F);
         this.setPos(this.getX() - vec3d2.x, this.getY() - vec3d2.y, this.getZ() - vec3d2.z);
-        this.playSound(this.getSound(), 1.0F, 1.0F);
+        this.playSound(this.getSound(), 0.7F, 1.0F);
         this.inGround = true;
         this.shake = 7;
         this.setCritical(false);

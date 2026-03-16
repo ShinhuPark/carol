@@ -34,5 +34,11 @@
     "sounds": [
       "carol:maimai_answer"
     ]
+  },
+  "carol_pachang": {
+    "subtitle": "sound.carol.carol_pachang",
+    "sounds": [
+      "carol:carol_pachang"
+    ]
   }
 }
